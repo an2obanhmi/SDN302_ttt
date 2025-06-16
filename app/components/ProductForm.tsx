@@ -93,7 +93,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     
     const dataToSend: CreateProductInput = {
       ...data,
-      image: finalImageUrl,
+      imageUrl: finalImageUrl,
     };
 
     try {

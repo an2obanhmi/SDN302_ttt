@@ -4,15 +4,24 @@ import { useRouter } from 'next/navigation';
 import ProductForm from '@/app/components/ProductForm';
 import Navigation from '@/app/components/Navigation';
 import toast from 'react-hot-toast';
+import { CreateProductInput } from '@/app/lib/validations/product';
 
 export default function NewProductPage() {
   const router = useRouter();
 
-  const handleCreateProduct = async (productData: FormData) => {
+  const handleCreateProduct = async (productData: CreateProductInput) => {
     try {
+      const formData = new FormData();
+      formData.append('name', productData.name);
+      formData.append('description', productData.description);
+      formData.append('price', productData.price.toString());
+      if (productData.image) {
+        formData.append('imageUrl', productData.image);
+      }
+
       const response = await fetch('/api/products', {
         method: 'POST',
-        body: productData,
+        body: formData,
       });
 
       if (!response.ok) {

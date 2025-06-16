@@ -73,7 +73,9 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     }
     
     const dataToSend: CreateProductInput = {
-      ...data,
+      name: data.name,
+      description: data.description,
+      price: data.price,
       image: finalImageUrl,
     };
 

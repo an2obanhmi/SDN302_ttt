@@ -11,12 +11,19 @@ export default function NewProductPage() {
 
   const handleCreateProduct = async (productData: CreateProductInput) => {
     try {
+      const dataToSend = {
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        imageUrl: productData.image,
+      };
+
       const response = await fetch('/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(productData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {

@@ -11,17 +11,17 @@ export default function NewProductPage() {
 
   const handleCreateProduct = async (productData: CreateProductInput) => {
     try {
+      const formData = new FormData();
+      formData.append('name', productData.name);
+      formData.append('description', productData.description);
+      formData.append('price', productData.price.toString());
+      if (productData.imageUrl) {
+        formData.append('imageUrl', productData.imageUrl);
+      }
+
       const response = await fetch('/api/products', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          imageUrl: productData.imageUrl,
-        }),
+        body: formData,
       });
 
       if (!response.ok) {

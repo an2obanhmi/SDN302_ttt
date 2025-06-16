@@ -106,6 +106,10 @@ export default function ProductsPage() {
             {/* Page Title & Search */}
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-3xl font-heading font-bold text-text uppercase tracking-wider">Products</h1>
+              <Link href="/products/new" className="btn inline-flex items-center space-x-2">
+                <Plus className="h-5 w-5" />
+                <span>Thêm sản phẩm</span>
+              </Link>
               <div className="relative w-64">
                 <input
                   type="text"

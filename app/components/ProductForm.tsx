@@ -66,26 +66,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     let finalImageUrl: string = product?.imageUrl || '';
 
     if (selectedFile) {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-
-      try {
-        const uploadResponse = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-          const errorData = await uploadResponse.json();
-          throw new Error(errorData.error || 'Không thể tải ảnh lên');
-        }
-
-        const uploadResult = await uploadResponse.json();
-        finalImageUrl = uploadResult.url;
-      } catch (uploadError: any) {
-        toast.error(`Lỗi tải ảnh: ${uploadError.message}`);
-        return;
-      }
+      finalImageUrl = URL.createObjectURL(selectedFile);
     } else if (!product && !finalImageUrl) {
       toast.error('Vui lòng chọn hình ảnh cho sản phẩm.');
       return;
@@ -93,7 +74,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
     
     const dataToSend: CreateProductInput = {
       ...data,
-      imageUrl: finalImageUrl,
+      image: finalImageUrl,
     };
 
     try {

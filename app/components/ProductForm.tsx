@@ -17,21 +17,23 @@ interface ProductFormProps {
 }
 
 export default function ProductForm({ product, onSubmit, isLoading }: ProductFormProps) {
-  const [previewImage, setPreviewImage] = useState<string>(product?.imageUrl || DEFAULT_IMAGE);
+  const [previewImage, setPreviewImage] = useState(product?.imageUrl || DEFAULT_IMAGE);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<CreateProductInput>({
     resolver: zodResolver(createProductSchema),
-    defaultValues: product ? {
-      name: product.name,
-      description: product.description,
-      price: product.price,
-    } : { },
+    defaultValues: product
+      ? {
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+        }
+      : {},
   });
 
   useEffect(() => {
@@ -60,11 +62,11 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
   const handleRemoveImage = () => {
     setSelectedFile(null);
     setPreviewImage(DEFAULT_IMAGE);
+    setValue('imageUrl', '');
   };
 
   const handleFormSubmit = async (data: CreateProductInput) => {
     let finalImageUrl: string = product?.imageUrl || '';
-
     if (selectedFile) {
       finalImageUrl = URL.createObjectURL(selectedFile);
     } else if (!product && !finalImageUrl) {
@@ -76,7 +78,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       name: data.name,
       description: data.description,
       price: data.price,
-      image: finalImageUrl,
+      imageUrl: finalImageUrl,
     };
 
     try {

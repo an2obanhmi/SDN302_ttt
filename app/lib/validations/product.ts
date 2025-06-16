@@ -8,7 +8,7 @@ export const createProductSchema = z.object({
     .min(1, 'Mô tả sản phẩm là bắt buộc'),
   price: z.number()
     .min(0, 'Giá sản phẩm không được âm'),
-  image: z.string().optional(),
+  imageUrl: z.string().optional(),
 });
 
 export const updateProductSchema = createProductSchema.partial();

@@ -50,7 +50,12 @@ export default function EditProductPage({ params }: EditProductPageProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(productData),
+        body: JSON.stringify({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          imageUrl: productData.imageUrl,
+        }),
       });
 
       if (!response.ok) {

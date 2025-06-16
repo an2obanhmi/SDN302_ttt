@@ -42,11 +42,19 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     fetchProduct();
   }, [id]);
 
-  const handleUpdateProduct = async (productData: FormData) => {
+  const handleUpdateProduct = async (productData: { name: string; description: string; price: number; imageUrl?: string }) => {
     try {
+      const formData = new FormData();
+      formData.append('name', productData.name);
+      formData.append('description', productData.description);
+      formData.append('price', productData.price.toString());
+      if (productData.imageUrl) {
+        formData.append('imageUrl', productData.imageUrl);
+      }
+
       const response = await fetch(`/api/products/${id}`, {
         method: 'PUT',
-        body: productData,
+        body: formData,
       });
 
       if (!response.ok) {

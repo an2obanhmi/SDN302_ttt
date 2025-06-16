@@ -6,6 +6,7 @@ import ProductForm from '@/app/components/ProductForm';
 import Navigation from '@/app/components/Navigation';
 import { IProduct } from '@/app/models/Product';
 import toast from 'react-hot-toast';
+import { CreateProductInput } from '@/app/lib/validations/product';
 
 interface EditProductPageProps {
   params: { id: string };
@@ -42,14 +43,14 @@ export default function EditProductPage({ params }: EditProductPageProps) {
     fetchProduct();
   }, [id]);
 
-  const handleUpdateProduct = async (productData: { name: string; description: string; price: number; imageUrl?: string }) => {
+  const handleUpdateProduct = async (productData: CreateProductInput) => {
     try {
       const formData = new FormData();
       formData.append('name', productData.name);
       formData.append('description', productData.description);
       formData.append('price', productData.price.toString());
-      if (productData.imageUrl) {
-        formData.append('imageUrl', productData.imageUrl);
+      if (productData.image) {
+        formData.append('imageUrl', productData.image);
       }
 
       const response = await fetch(`/api/products/${id}`, {

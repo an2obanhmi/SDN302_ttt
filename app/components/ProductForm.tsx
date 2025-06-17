@@ -31,7 +31,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
           name: product.name,
           description: product.description,
           price: product.price,
-          imageUrl: product.imageUrl,
+          image: product.imageUrl,
         }
       : {},
   });
@@ -62,7 +62,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
   const handleRemoveImage = () => {
     setSelectedFile(null);
     setPreviewImage(DEFAULT_IMAGE);
-    setValue('imageUrl', '');
+    setValue('image', '');
   };
 
   const handleFormSubmit = async (data: CreateProductInput) => {
@@ -78,7 +78,7 @@ export default function ProductForm({ product, onSubmit, isLoading }: ProductFor
       name: data.name,
       description: data.description,
       price: data.price,
-      imageUrl: finalImageUrl,
+      image: finalImageUrl,
     };
 
     try {

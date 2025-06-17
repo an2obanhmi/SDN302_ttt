@@ -45,17 +45,12 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
   const handleUpdateProduct = async (productData: CreateProductInput) => {
     try {
-      const formData = new FormData();
-      formData.append('name', productData.name);
-      formData.append('description', productData.description);
-      formData.append('price', productData.price.toString());
-      if (productData.imageUrl) {
-        formData.append('imageUrl', productData.imageUrl);
-      }
-
       const response = await fetch(`/api/products/${id}`, {
         method: 'PUT',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
       });
 
       if (!response.ok) {

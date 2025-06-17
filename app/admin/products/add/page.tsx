@@ -12,7 +12,7 @@ interface FormErrors {
   name?: string;
   price?: string;
   stock?: string;
-  imageUrl?: string;
+  image?: string;
 }
 
 export default function AddProduct() {
@@ -24,18 +24,18 @@ export default function AddProduct() {
     name: '',
     description: '',
     price: '',
-    imageUrl: '',
+    image: '',
     category: '',
     stock: '',
   });
 
   useEffect(() => {
-    if (formData.imageUrl) {
-      setPreviewImage(formData.imageUrl);
+    if (formData.image) {
+      setPreviewImage(formData.image);
     } else {
       setPreviewImage(DEFAULT_IMAGE);
     }
-  }, [formData.imageUrl]);
+  }, [formData.image]);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -56,8 +56,8 @@ export default function AddProduct() {
       newErrors.stock = 'Số lượng tồn kho không được âm';
     }
 
-    if (formData.imageUrl && !isValidUrl(formData.imageUrl)) {
-      newErrors.imageUrl = 'URL ảnh không hợp lệ';
+    if (formData.image && !isValidUrl(formData.image)) {
+      newErrors.image = 'URL ảnh không hợp lệ';
     }
 
     setErrors(newErrors);
@@ -103,7 +103,7 @@ export default function AddProduct() {
         ...formData,
         price: Number(formData.price),
         stock: Number(formData.stock),
-        imageUrl: formData.imageUrl || DEFAULT_IMAGE,
+        image: formData.image || DEFAULT_IMAGE,
       };
 
       const response = await fetch('/api/products', {
@@ -230,23 +230,23 @@ export default function AddProduct() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="imageUrl" className="form-label">
+          <label htmlFor="image" className="form-label">
             Link ảnh sản phẩm
           </label>
           <div className="flex gap-4">
             <div className="flex-1">
               <input
                 type="url"
-                id="imageUrl"
-                name="imageUrl"
-                value={formData.imageUrl}
+                id="image"
+                name="image"
+                value={formData.image}
                 onChange={handleChange}
-                className={`input ${errors.imageUrl ? 'border-red-500 focus:ring-red-500' : ''}`}
+                className={`input ${errors.image ? 'border-red-500 focus:ring-red-500' : ''}`}
                 placeholder="Nhập URL ảnh sản phẩm"
                 disabled={loading}
               />
-              {errors.imageUrl ? (
-                <p className="form-error">{errors.imageUrl}</p>
+              {errors.image ? (
+                <p className="form-error">{errors.image}</p>
               ) : (
                 <p className="form-hint">
                   Nếu không nhập, hệ thống sẽ sử dụng ảnh mặc định

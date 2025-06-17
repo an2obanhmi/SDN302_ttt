@@ -32,8 +32,6 @@ export async function POST(request: Request) {
       description: validatedData.description,
       price: validatedData.price,
       imageUrl: validatedData.image,
-      // category: validatedData.category, // Nếu có trường category trong schema và model
-      // stock: validatedData.stock, // Nếu có trường stock trong schema và model
     });
 
     return NextResponse.json({ success: true, data: product }, { status: 201 });
@@ -73,8 +71,6 @@ export async function PUT(request: Request) {
         description: validatedData.description,
         price: validatedData.price,
         imageUrl: validatedData.image,
-        // category: validatedData.category,
-        // stock: validatedData.stock,
       },
       { new: true }
     );

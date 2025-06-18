@@ -4,6 +4,7 @@ import Product from '@/app/models/Product';
 import { handleDatabaseError } from '@/app/lib/dbUtils';
 import { updateProductSchema } from '@/app/lib/validations/product';
 import mongoose from 'mongoose';
+import { requireAuth } from '@/lib/middleware';
 
 export async function GET(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
   try {
@@ -40,6 +41,12 @@ export async function GET(request: Request, { params: paramsPromise }: { params:
 
 export async function PUT(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
   try {
+    // Kiểm tra authentication
+    const authResult = await requireAuth(request);
+    if (authResult instanceof NextResponse) {
+      return authResult; // Trả về lỗi 401 nếu chưa đăng nhập
+    }
+
     const params = await paramsPromise;
     await connectDB();
 
@@ -89,6 +96,12 @@ export async function PUT(request: Request, { params: paramsPromise }: { params:
 
 export async function DELETE(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
   try {
+    // Kiểm tra authentication
+    const authResult = await requireAuth(request);
+    if (authResult instanceof NextResponse) {
+      return authResult; // Trả về lỗi 401 nếu chưa đăng nhập
+    }
+
     const params = await paramsPromise;
     await connectDB();
 

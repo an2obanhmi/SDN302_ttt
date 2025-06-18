@@ -1,4 +1,5 @@
 import mongoose, { Mongoose } from 'mongoose';
+import { MongoClient } from 'mongodb';
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Vui lòng cấu hình MONGODB_URI trong file .env');
@@ -6,6 +7,10 @@ if (!process.env.MONGODB_URI) {
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
+// For NextAuth MongoDB Adapter
+const clientPromise = MongoClient.connect(MONGODB_URI);
+
+// For Mongoose connection
 interface CachedMongoose {
   conn: Mongoose | null;
   promise: Promise<Mongoose> | null;
@@ -38,4 +43,6 @@ export async function connectToDatabase() {
   }
 
   return cached.conn;
-} 
+}
+
+export default clientPromise; 

@@ -7,6 +7,7 @@ import Navigation from '@/app/components/Navigation';
 import ProductCard from '@/app/components/ProductCard';
 import Loading from '@/app/components/ui/Loading';
 import ErrorMessage from '@/app/components/ui/Error';
+import AuthTest from '@/app/components/AuthTest';
 import { IProduct } from '@/app/models/Product';
 
 export default function HomePage() {
@@ -98,6 +99,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background pt-16">
       <Navigation />
+      <AuthTest />
       
       {/* Hero Section */}
       <section className="relative h-[calc(100vh-64px)] flex items-center justify-center text-center overflow-hidden mb-12">

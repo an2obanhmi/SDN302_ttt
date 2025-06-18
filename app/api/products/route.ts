@@ -4,6 +4,7 @@ import { Product } from '@/models/Product';
 import { handleError, AppError } from '../../utils/errorHandler';
 import { createProductSchema, updateProductSchema } from '@/app/lib/validations/product';
 import { ZodError } from 'zod';
+import { requireAuth } from '@/lib/middleware';
 
 export async function GET() {
   try {
@@ -21,6 +22,12 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    // Kiểm tra authentication
+    const authResult = await requireAuth(request);
+    if (authResult instanceof NextResponse) {
+      return authResult; // Trả về lỗi 401 nếu chưa đăng nhập
+    }
+
     await connectToDatabase();
     
     const body = await request.json();
@@ -50,6 +57,12 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    // Kiểm tra authentication
+    const authResult = await requireAuth(request);
+    if (authResult instanceof NextResponse) {
+      return authResult; // Trả về lỗi 401 nếu chưa đăng nhập
+    }
+
     await connectToDatabase();
     
     const body = await request.json();
@@ -98,6 +111,12 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    // Kiểm tra authentication
+    const authResult = await requireAuth(request);
+    if (authResult instanceof NextResponse) {
+      return authResult; // Trả về lỗi 401 nếu chưa đăng nhập
+    }
+
     await connectToDatabase();
     
     const { searchParams } = new URL(request.url);

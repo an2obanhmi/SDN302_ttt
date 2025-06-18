@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Poppins, Inter } from "next/font/google";
 import './globals.css'
 import Footer from './components/Footer';
-
-
+import Providers from './components/Providers';
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -40,8 +39,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${poppins.variable} ${inter.variable} font-sans antialiased bg-background text-text min-h-screen`}
       >
-        {children}
-        <Footer />
+        <Providers>
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

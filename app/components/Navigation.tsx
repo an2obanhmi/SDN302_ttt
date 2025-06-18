@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingBag, User, Heart, Search } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, Heart, Search, LogOut, Plus } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { user, isAuthenticated, logout, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +27,11 @@ export default function Navigation() {
     { href: '/collections', label: 'Collections' },
     { href: '/about', label: 'About' },
   ];
+
+  const handleLogout = async () => {
+    await logout();
+    setIsOpen(false);
+  };
 
   return (
     <nav
@@ -67,9 +74,49 @@ export default function Navigation() {
             <Link href="/cart" className="btn-icon">
               <ShoppingBag className="h-5 w-5" />
             </Link>
-            <Link href="/account" className="btn-icon">
-              <User className="h-5 w-5" />
-            </Link>
+            
+            {/* Add Product Button - Only for authenticated users */}
+            {!loading && isAuthenticated && (
+              <Link 
+                href="/products/new" 
+                className="btn-icon bg-primary text-white hover:bg-primary/90"
+                title="Thêm sản phẩm mới"
+              >
+                <Plus className="h-5 w-5" />
+              </Link>
+            )}
+            
+            {/* User Authentication */}
+            {!loading && (
+              <>
+                {isAuthenticated ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 px-3 py-1 bg-background-alt rounded-lg">
+                      <User className="h-4 w-4 text-text-light" />
+                      <span className="text-sm text-text-light">
+                        {user?.name || user?.email}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={handleLogout}
+                      className="btn-icon text-red-500 hover:text-red-600"
+                      title="Đăng xuất"
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <Link href="/auth/login" className="btn-secondary text-sm">
+                      Đăng nhập
+                    </Link>
+                    <Link href="/auth/register" className="btn text-sm">
+                      Đăng ký
+                    </Link>
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -98,6 +145,19 @@ export default function Navigation() {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Add Product - Mobile - Only for authenticated users */}
+            {!loading && isAuthenticated && (
+              <Link
+                href="/products/new"
+                className="flex items-center space-x-2 px-3 py-2 text-primary hover:bg-primary/10 rounded-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                <Plus className="h-5 w-5" />
+                <span>Thêm sản phẩm</span>
+              </Link>
+            )}
+            
             <div className="flex items-center space-x-4 pt-4 border-t border-border">
               <Link
                 href="/wishlist"
@@ -115,14 +175,46 @@ export default function Navigation() {
                 <ShoppingBag className="h-5 w-5" />
                 <span>Giỏ hàng</span>
               </Link>
-              <Link
-                href="/account"
-                className="flex items-center space-x-2 px-3 py-2 text-text-light hover:bg-background-alt rounded-lg"
-                onClick={() => setIsOpen(false)}
-              >
-                <User className="h-5 w-5" />
-                <span>Tài khoản</span>
-              </Link>
+              
+              {/* Mobile Authentication */}
+              {!loading && (
+                <>
+                  {isAuthenticated ? (
+                    <>
+                      <div className="flex items-center space-x-2 px-3 py-2 text-text-light">
+                        <User className="h-5 w-5" />
+                        <span>{user?.name || user?.email}</span>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center space-x-2 px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg"
+                      >
+                        <LogOut className="h-5 w-5" />
+                        <span>Đăng xuất</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/auth/login"
+                        className="flex items-center space-x-2 px-3 py-2 text-text-light hover:bg-background-alt rounded-lg"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <User className="h-5 w-5" />
+                        <span>Đăng nhập</span>
+                      </Link>
+                      <Link
+                        href="/auth/register"
+                        className="flex items-center space-x-2 px-3 py-2 text-text-light hover:bg-background-alt rounded-lg"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <User className="h-5 w-5" />
+                        <span>Đăng ký</span>
+                      </Link>
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

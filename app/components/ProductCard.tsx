@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IProduct } from '@/app/models/Product';
 import { Edit, Trash2, Heart, ShoppingBag } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const DEFAULT_IMAGE = '/images/placeholder.svg';
 
@@ -13,6 +14,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onDelete }: ProductCardProps) {
+  const { isAuthenticated, loading } = useAuth();
+
   return (
     <div className="group relative bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-hover">
       {/* Product Image */}
@@ -58,11 +61,13 @@ export default function ProductCard({ product, onDelete }: ProductCardProps) {
             }).format(product.price)}
           </p>
           
-          {onDelete && (
+          {/* Admin Actions - Only show to authenticated users */}
+          {!loading && isAuthenticated && onDelete && (
             <div className="flex space-x-2">
               <Link
                 href={`/products/${product._id}/edit`}
                 className="p-2 text-text hover:text-primary transition-colors"
+                title="Chỉnh sửa sản phẩm"
               >
                 <Edit className="h-5 w-5" />
               </Link>
@@ -73,6 +78,7 @@ export default function ProductCard({ product, onDelete }: ProductCardProps) {
                     onDelete(product._id as string);
                   }
                 }}
+                title="Xóa sản phẩm"
               >
                 <Trash2 className="h-5 w-5" />
               </button>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProductForm from '@/app/components/ProductForm';
 import Navigation from '@/app/components/Navigation';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 import { IProduct } from '@/app/models/Product';
 import toast from 'react-hot-toast';
 import { CreateProductInput } from '@/app/lib/validations/product';
@@ -67,51 +68,59 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-          <p className="mt-4 text-text-light">Đang tải thông tin sản phẩm...</p>
-        </main>
-      </div>
+      <ProtectedRoute>
+        <div className="min-h-screen bg-background">
+          <Navigation />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            <p className="mt-4 text-text-light">Đang tải thông tin sản phẩm...</p>
+          </main>
+        </div>
+      </ProtectedRoute>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center min-h-[calc(100vh-64px)]">
-          <div className="text-center">
-            <h2 className="text-2xl font-heading font-bold text-text mb-4">Có lỗi xảy ra</h2>
-            <p className="text-text-light">{error}</p>
-          </div>
-        </main>
-      </div>
+      <ProtectedRoute>
+        <div className="min-h-screen bg-background">
+          <Navigation />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center min-h-[calc(100vh-64px)]">
+            <div className="text-center">
+              <h2 className="text-2xl font-heading font-bold text-text mb-4">Có lỗi xảy ra</h2>
+              <p className="text-text-light">{error}</p>
+            </div>
+          </main>
+        </div>
+      </ProtectedRoute>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center min-h-[calc(100vh-64px)]">
-          <div className="text-center">
-            <h2 className="text-2xl font-heading font-bold text-text mb-4">Không tìm thấy sản phẩm</h2>
-            <p className="text-text-light">Sản phẩm bạn đang tìm kiếm không tồn tại.</p>
-          </div>
-        </main>
-      </div>
+      <ProtectedRoute>
+        <div className="min-h-screen bg-background">
+          <Navigation />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex items-center justify-center min-h-[calc(100vh-64px)]">
+            <div className="text-center">
+              <h2 className="text-2xl font-heading font-bold text-text mb-4">Không tìm thấy sản phẩm</h2>
+              <p className="text-text-light">Sản phẩm bạn đang tìm kiếm không tồn tại.</p>
+            </div>
+          </main>
+        </div>
+      </ProtectedRoute>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background pt-16">
-      <Navigation />
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-heading font-bold text-text mb-8">Chỉnh Sửa Sản Phẩm</h1>
-        <ProductForm product={product} onSubmit={handleUpdateProduct} />
-      </main>
-    </div>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background pt-16">
+        <Navigation />
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-heading font-bold text-text mb-8">Chỉnh Sửa Sản Phẩm</h1>
+          <ProductForm product={product} onSubmit={handleUpdateProduct} />
+        </main>
+      </div>
+    </ProtectedRoute>
   );
 } 

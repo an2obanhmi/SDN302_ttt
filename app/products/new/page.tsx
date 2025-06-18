@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import ProductForm from '@/app/components/ProductForm';
 import Navigation from '@/app/components/Navigation';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 import toast from 'react-hot-toast';
 import { CreateProductInput } from '@/app/lib/validations/product';
 
@@ -32,12 +33,14 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-16">
-      <Navigation />
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-heading font-bold text-text mb-8">Thêm Sản Phẩm Mới</h1>
-        <ProductForm onSubmit={handleCreateProduct} />
-      </main>
-    </div>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background pt-16">
+        <Navigation />
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-heading font-bold text-text mb-8">Thêm Sản Phẩm Mới</h1>
+          <ProductForm onSubmit={handleCreateProduct} />
+        </main>
+      </div>
+    </ProtectedRoute>
   );
 } 

@@ -6,6 +6,7 @@ export interface IProduct extends Document {
   description: string;
   price: number;
   imageUrl: string;
+  createdBy?: string; // Reference to User ID
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,6 +31,11 @@ const productSchema = new Schema({
   imageUrl: {
     type: String,
     required: [true, 'Hình ảnh sản phẩm là bắt buộc']
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: false // Optional field
   }
 }, {
   timestamps: true // Tự động thêm createdAt và updatedAt
@@ -37,5 +43,6 @@ const productSchema = new Schema({
 
 // Tạo index cho các trường thường xuyên tìm kiếm
 productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ createdBy: 1 });
 
 export default mongoose.models.Product || mongoose.model<IProduct>('Product', productSchema); 
